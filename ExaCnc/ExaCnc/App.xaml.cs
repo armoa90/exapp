@@ -12,7 +12,7 @@ namespace ExaCnc
         {
             InitializeComponent();
 
-            MainPage = new InicioPage();
+            MainPage = new NavigationPage(new InicioPage());
         }
         #endregion
         #region Metodos

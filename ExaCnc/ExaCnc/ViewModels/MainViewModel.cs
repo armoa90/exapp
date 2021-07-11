@@ -12,12 +12,31 @@ namespace ExaCnc.ViewModels
             get;
             set;
         }
+        public TorneosViewModel Torneos 
+        { 
+            get; 
+            set;
+        }
         #endregion
         #region Constructor
         public MainViewModel()
         {
+            instance = this;
             this.Inicio = new InicioViewModel();
         }
+        #endregion
+        #region Singleton
+            // region para llamar solo una vez al mainViewMOdel desde cualquier clase sin instanciar otro MainViewModel 
+            private static MainViewModel instance;
+            public static MainViewModel GetInstance() 
+            {
+                if (instance == null) 
+                {
+                    return new MainViewModel();
+                }
+                return instance;
+
+            }
         #endregion
     }
 }
