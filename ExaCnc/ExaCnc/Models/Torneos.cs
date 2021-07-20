@@ -1,11 +1,14 @@
 ﻿namespace ExaCnc.Models
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
     using Newtonsoft.Json;
-    public class Root
+    class Torneos
     {
         [JsonProperty(PropertyName = "codigo")]
         public int Codigo { get; set; }
-        [JsonProperty(PropertyName = "Desripcion")]
+        [JsonProperty(PropertyName = "desripcion")]
         public string Desripcion { get; set; }
     }
 }

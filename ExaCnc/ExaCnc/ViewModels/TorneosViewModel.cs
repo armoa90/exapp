@@ -13,13 +13,13 @@
         private ApiService apiService;
         #endregion
         #region  Atributos
-        private ObservableCollection<Root> root;
+        private ObservableCollection<Torneos> torneos;
         #endregion
         #region Propiedades
-        public ObservableCollection<Root> Root
+        public ObservableCollection<Torneos> Torneos
         {
-            get { return this.root; }
-            set { SetValue(ref this.root, value); }
+            get { return this.torneos;}
+            set { SetValue(ref this.torneos, value); }
         }
 
         #endregion
@@ -33,10 +33,12 @@
         #region metodos
         private async void LoadTorneos()
         {
-            var response = await this.apiService.GetList<Root>(
+            var response = await this.apiService.GetList<Torneos>(
                 "http://exacnc.com",
                 "/rest",
-                "/torneo");
+                "/torneo",
+                "ApiUserAdmin",
+                "ApiUserAdmin");
             if (!response.IsSuccess)
             {
                 await Application.Current.MainPage.DisplayAlert(
@@ -45,8 +47,8 @@
                     "Accept");
                 return;
             }
-            var list = (List<Root>)response.Result;
-            this.Root = new ObservableCollection<Root>(list);
+            var list = (List<Torneos>)response.Result;
+            this.Torneos = new ObservableCollection<Torneos>(list);
         }
         #endregion
 
