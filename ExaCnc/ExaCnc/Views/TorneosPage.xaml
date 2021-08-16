@@ -2,17 +2,57 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ExaCnc.Views.TorneosPage"
-              BindingContext="{Binding Main ,Source={StaticResource Locator}}"
+             BindingContext="{Binding Main ,Source={StaticResource Locator}}"
              Title="Torneos">
     <ContentPage.Content>
         <StackLayout 
-            BindingContext="{Binding Torneos}"
-            Padding="5">
-            <Label 
-                FontSize="Large"
-                Text="Torneo PAge"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            BindingContext="{Binding Torneos}">
+            <SearchBar
+                
+                HeightRequest="46"
+                Text="{Binding Filter, Mode=TwoWay}"
+                Placeholder="Search..."
+                SearchCommand="{Binding SearchCommand}">
+            </SearchBar>
+            <ListView               
+                HasUnevenRows="true" 
+                IsPullToRefreshEnabled="true"
+                IsRefreshing="{Binding IsRefreshing, Mode=TwoWay}"
+                ItemsSource="{Binding Torneos}"
+                SeparatorVisibility="None"
+                RefreshCommand="{Binding RefreshCommand}">
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>                                    
+                                </Grid.ColumnDefinitions>
+                                <StackLayout 
+                                        Grid.Column="0"
+                                        VerticalOptions="Center">
+                                    <Label 
+                                            FontAttributes="Bold"
+                                            FontSize="Medium" 
+                                            Text="{Binding Descripcion}"
+                                            >
+                                    </Label>
+                                    
+                                </StackLayout>
+                                <Image 
+                                        Grid.Column="2"
+                                        HorizontalOptions="End" 
+                                        Source="ic_chevron_right">
+                                </Image>
+                            </Grid>
+                        </ViewCell>
+                            
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+
+            </ListView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

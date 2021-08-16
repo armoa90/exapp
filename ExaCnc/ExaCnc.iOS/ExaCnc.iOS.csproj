@@ -136,4 +136,7 @@
   <ItemGroup>
     <BundleResource Include="Resources\csdcnc.png" />
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\ic_launcher.png" />
+  </ItemGroup>
 </Project>
