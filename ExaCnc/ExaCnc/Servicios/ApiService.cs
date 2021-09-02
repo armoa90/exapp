@@ -13,7 +13,7 @@
     using Plugin.Connectivity;
     public class ApiService
     {
-        public async Task<Response> CheckConnection()
+       /* public async Task<Response> CheckConnection()
         {
             if (!CrossConnectivity.Current.IsConnected)
             {
@@ -24,8 +24,7 @@
                 };
             }
 
-            var isReachable = await CrossConnectivity.Current.IsRemoteReachable(
-                "google.com");
+            var isReachable = await CrossConnectivity.Current.IsRemoteReachable("google.com");
             if (!isReachable)
             {
                 return new Response
@@ -40,7 +39,7 @@
                 IsSuccess = true,
                 Message = "Ok",
             };
-        }
+        }*/
         public async Task<TokenResponse> GetToken(string urlBase, string username, string password)
         {
             try
@@ -137,7 +136,9 @@
                 }
                 
 
-                var list = JsonConvert.DeserializeObject<T>(result); 
+
+                var list = JsonConvert.DeserializeObject<T>(result);
+               
 
                 return new Response
                 {

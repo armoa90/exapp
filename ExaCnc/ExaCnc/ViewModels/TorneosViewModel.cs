@@ -8,18 +8,23 @@
     using Xamarin.Forms;
     using System.Windows.Input;
     using GalaSoft.MvvmLight.Command;
+    using System.Linq;
 
-    class TorneosViewModel : BaseViewModel
+    public class TorneosViewModel : BaseViewModel
     {
         #region Servicios
         private ApiService apiService;
         #endregion
+
         #region  Atributos
-        private ObservableCollection<TorneosList> torneos; 
+        private ObservableCollection<DetalleItemViewModel> torneos; 
         private bool isRefreshing;
+        private string filter;
+        private List<TorneoList> ListTorn;
         #endregion
+
         #region Propiedades
-        public ObservableCollection<TorneosList> Torneos
+        public ObservableCollection<DetalleItemViewModel> Torneos
         {
             get { return this.torneos; }
             set { SetValue(ref this.torneos, value); }
@@ -30,21 +35,33 @@
             get { return this.isRefreshing; }
             set { SetValue(ref this.isRefreshing, value); }
         }
+
+        public string Filter
+        {
+            get { return this.filter; }
+            set { 
+
+                SetValue(ref this.filter, value);
+               this.Search();
+                }
+        }
         #endregion
+
         #region constructor
         public TorneosViewModel()
         {
             this.apiService = new ApiService();
             this.LoadTorneos();
         }
-        #endregion
+        #endregion 
+
         #region metodos
         private async void LoadTorneos()
         {
             this.IsRefreshing = true;
-            var coneccion = await this.apiService.CheckConnection();
+            //var coneccion = await this.apiService.CheckConnection();
 
-            if (!coneccion.IsSuccess) {
+            /*if (!coneccion.IsSuccess) {
                 this.IsRefreshing = false;
                 await Application.Current.MainPage.DisplayAlert(
                     "Error",
@@ -52,8 +69,8 @@
                     "Accept");
                 await Application.Current.MainPage.Navigation.PopAsync();
                 return;
-            }
-                var response = await this.apiService.GetList<Torneos>(
+            }*/
+                var response = await this.apiService.GetList<Torneo>(
                 "http://exacnc.com",
                 "/rest",
                 "/torneo",
@@ -69,15 +86,31 @@
                 await Application.Current.MainPage.Navigation.PopAsync();
                 return;
             }
-            var objTorneos = (Torneos)response.Result;
-           var listTor = (List<TorneosList>)objTorneos.TorneosList;
-           // var list =(List<TorneosList>)response.Result;
+           var objTorneos = (Torneo)response.Result;
+           this.ListTorn = (List<TorneoList>)objTorneos.TorneoList;
+           
+            //var list =(Torneo)response.Result;
 
-            this.Torneos = new ObservableCollection<TorneosList>(listTor);
+            this.Torneos = new ObservableCollection<DetalleItemViewModel>(this.toDetalleItemViewModel()); 
             
             this.IsRefreshing = false;
         }
         #endregion
+
+        #region methodos
+            private IEnumerable<DetalleItemViewModel> toDetalleItemViewModel()
+            {
+                return this.ListTorn.Select(l => new DetalleItemViewModel
+                {
+                    Codigo = l.Codigo,
+                    Descripcion = l.Descripcion
+                });
+            }
+        #endregion
+
+
+
+
         #region Commands
         public ICommand RefreshCommand
         {
@@ -88,7 +121,28 @@
             }
             
         }
+        public ICommand SearchCommand
+        {
+            get
+            {
+                return new RelayCommand(Search);
+            }
+        }
 
+        private void Search()
+        {
+            if (string.IsNullOrEmpty(this.Filter))
+            {
+                this.Torneos = new ObservableCollection<DetalleItemViewModel>(
+                this.toDetalleItemViewModel());
+            }
+            else
+            {
+                this.Torneos = new ObservableCollection<DetalleItemViewModel>(
+                    this.toDetalleItemViewModel().Where(
+                        l => l.Descripcion.ToLower().Contains(this.Filter.ToLower())));
+            }
+         }
         #endregion
 
     }

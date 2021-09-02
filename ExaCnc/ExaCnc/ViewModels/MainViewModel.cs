@@ -17,6 +17,12 @@ namespace ExaCnc.ViewModels
             get; 
             set;
         }
+        public TorneoDetalleViewModel TorneoDetalle
+        {
+            get;
+            set;
+        }
+
         #endregion
         #region Constructor
         public MainViewModel()

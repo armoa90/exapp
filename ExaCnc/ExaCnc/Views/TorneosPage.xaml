@@ -12,7 +12,8 @@
                 HeightRequest="46"
                 Text="{Binding Filter, Mode=TwoWay}"
                 Placeholder="Search..."
-                SearchCommand="{Binding SearchCommand}">
+                SearchCommand="{Binding SearchCommand}"
+               >
             </SearchBar>
             <ListView               
                 HasUnevenRows="true" 
@@ -25,29 +26,44 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>                                    
-                                </Grid.ColumnDefinitions>
-                                <StackLayout 
+                            <Frame
+                                CornerRadius="20"
+                                HasShadow="true"
+                                Margin="5">
+                                
+                                <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SelectTorneoCommand}"/>
+                                </Frame.GestureRecognizers>
+                                
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackLayout 
                                         Grid.Column="0"
-                                        VerticalOptions="Center">
-                                    <Label 
+                                        VerticalOptions="Center"
+                                       >
+                                        <Label 
                                             FontAttributes="Bold"
                                             FontSize="Medium" 
                                             Text="{Binding Descripcion}"
-                                            >
-                                    </Label>
-                                    
-                                </StackLayout>
-                                <Image 
-                                        Grid.Column="2"
+                                            TextColor="Black"
+                                            VerticalOptions="CenterAndExpand"
+                                            >                                            
+                                        </Label>                                      
+
+
+                                    </StackLayout>
+                                    <Image 
+                                        Grid.Column="1"
                                         HorizontalOptions="End" 
                                         Source="ic_chevron_right">
-                                </Image>
-                            </Grid>
-                        </ViewCell>
+                                    </Image>
+                                </Grid>
+
+                            </Frame>
+                            </ViewCell>
                             
                     </DataTemplate>
                 </ListView.ItemTemplate>
